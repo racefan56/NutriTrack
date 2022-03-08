@@ -17,9 +17,6 @@ const { protect } = require('./controllers/authController');
 
 const app = express();
 
-//will allow us to use heroku as it is a proxy
-app.enable('trust proxy');
-
 // MIDDLEWARES
 app.use(helmet());
 
