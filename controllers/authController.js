@@ -6,13 +6,12 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
 
-const signToken = (id) => {
-  return jwt.sign({ id: id }, process.env.JWT_SECRET, {
+const signToken = (id) =>
+  jwt.sign({ id: id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
-};
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   const cookieOptions = {
@@ -21,6 +20,7 @@ const createSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    secure: req.secure || req.headers('x-forwarded-proto') === 'https',
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
@@ -49,7 +49,7 @@ exports.registerUser = async (req, res) => {
       //FOR TESTING ONLY
       role: req.body.role,
     });
-    createSendToken(newUser, 201, res);
+    createSendToken(newUser, 201, req, res);
   } catch (err) {
     res.status(400).json({
       status: 'fail',
@@ -76,7 +76,7 @@ exports.login = async (req, res, next) => {
       );
     }
     // 3) if everything is ok, send JWT back to client
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
   } catch (err) {
     res.status(400).json({
       status: 'fail',
@@ -252,7 +252,7 @@ exports.updatePassword = async (req, res, next) => {
     await user.save();
 
     // 4 log user in, send JWT
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
   } catch (err) {
     res.status(400).json({
       status: 'fail',
