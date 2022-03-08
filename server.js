@@ -19,6 +19,14 @@ mongoose
 
 //START SERVER
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`App running on port: ${port}...`);
+});
+
+//heroku will send a signal called SIGTERM every 24 hours to restart the app. This will react to that signal and gracfully shut down
+process.on('SIGTERM', () => {
+  console.log('👍 SIGTERM RECIEVED. Shutting down gracefully');
+  server.close(() => {
+    console.log('👍 Process terminated');
+  });
 });
