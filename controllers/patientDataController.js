@@ -3,8 +3,6 @@ const express = require('express');
 const PatientData = require('../models/patientDataModel');
 const Room = require('../models/roomModel');
 
-const APIFeatures = require('./../utils/apiFeatures');
-
 const factory = require('./handlerFactory');
 
 //CREATE new patient
