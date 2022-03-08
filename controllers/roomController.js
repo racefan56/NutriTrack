@@ -1,8 +1,6 @@
 const express = require('express');
 
-const Room = require('./../models/roomModel');
-
-const APIFeatures = require('./../utils/apiFeatures');
+const Room = require('../models/roomModel');
 
 const factory = require('./handlerFactory');
 

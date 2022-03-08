@@ -1,5 +1,5 @@
 const AppError = require('../utils/appError');
-const APIFeatures = require('../utils/apiFeatures');
+const APIFeatures = require('../utils/APIFeatures');
 const helperFunctions = require('../utils/helperFunctions');
 const Menu = require('../models/menuModel');
 
