@@ -34,7 +34,7 @@ const limiter = rateLimit({
 
 //if your frontend is located somewhere different than your API, you'd need to allow it in cors
 // could also pass other urls here for specific websites to have access
-app.use(cors({ origin: 'http://localhost:3000/' }));
+app.use(cors({ origin: 'http://localhost:3000' }));
 
 //ALLOWING PATCH AND DELETE REQUESTS WITH CORS
 //allows these on all resources
