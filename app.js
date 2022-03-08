@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
 
 const patientRouter = require('./routes/patientRoutes');
 const menuRouter = require('./routes/menuRoutes');
@@ -30,6 +31,14 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour',
 });
+
+//if your frontend is located somewhere different than your API, you'd need to allow it in cors
+// could also pass other urls here for specific websites to have access
+app.use(cors({ origin: 'http://localhost:3000/' }));
+
+//ALLOWING PATCH AND DELETE REQUESTS WITH CORS
+//allows these on all resources
+app.options('*', cors());
 
 //add limiter to ALL routes that start with /api
 app.use('/api', limiter);
