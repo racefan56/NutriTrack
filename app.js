@@ -12,6 +12,7 @@ const patientRouter = require('./routes/patientRoutes');
 const menuRouter = require('./routes/menuRoutes');
 const unitRouter = require('./routes/unitRoutes');
 const userRouter = require('./routes/userRoutes');
+const indexRouter = require('./routes/indexRoutes');
 
 const { protect } = require('./controllers/authController');
 // const globalErrorHandler = require('./controllers/errorController');
@@ -37,7 +38,7 @@ const limiter = rateLimit({
 
 //Origin is the current location of the front end
 // could also pass other urls here for specific websites to have access
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 //ALLOWING PATCH AND DELETE REQUESTS WITH CORS
 //allows these on all resources
@@ -78,6 +79,8 @@ app.use('/api/v1/patients', protect, patientRouter);
 app.use('/api/v1/menus', protect, menuRouter);
 app.use('/api/v1/units', protect, unitRouter);
 app.use('/api/v1/users', userRouter);
+//Simply displays a message if someone attempts to visit the index of this backend app when hosted
+app.use('/', indexRouter);
 
 // WILL ONLY BE RUN IF A ROUTE IS REQUESTED THAT NO ABOVE ROUTER HANDLES
 app.all('*', (req, res, next) => {
