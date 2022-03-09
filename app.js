@@ -18,6 +18,9 @@ const { protect } = require('./controllers/authController');
 
 const app = express();
 
+//will allow us to use heroku as it is a proxy
+app.enable('trust proxy');
+
 // MIDDLEWARES
 app.use(helmet());
 
@@ -32,7 +35,7 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour',
 });
 
-//if your frontend is located somewhere different than your API, you'd need to allow it in cors
+//Origin is the current location of the front end
 // could also pass other urls here for specific websites to have access
 app.use(cors({ origin: 'http://localhost:3000' }));
 
