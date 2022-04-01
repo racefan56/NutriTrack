@@ -191,6 +191,8 @@ exports.getPatientDietAllergies = async (req, res, next) => {
   try {
     const currentPatient = await PatientData.findById(req.params.id);
 
+    console.log(currentPatient);
+
     req.currentDiet = currentPatient.currentDiet._id;
     req.currentDietName = currentPatient.currentDiet.name;
     req.knownAllergies = currentPatient.knownAllergies;

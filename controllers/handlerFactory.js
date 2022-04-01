@@ -141,6 +141,7 @@ exports.createOne = (Model) => async (req, res, next) => {
           )
         );
       }
+
       //Get the default menu that matches the patient diet, day, & mealPeriod (A unique compound index)
       const meal = await Menu.findOne({
         dietAvailability: req.currentDiet,
@@ -154,14 +155,15 @@ exports.createOne = (Model) => async (req, res, next) => {
         day: meal.day,
         mealPeriod: meal.mealPeriod,
         entree: meal.entree,
-        sides: meal.sides,
-        dessert: meal.dessert,
-        drinks: meal.drinks,
-        condiments: meal.condiments,
+        sides: [...meal.sides],
+        dessert: [...meal.dessert],
+        drinks: [...meal.drinks],
+        condiments: [...meal.condiments],
       };
 
       //gather menu items in an array for allergy check below
       const menuItems = [
+        meal.entree,
         ...meal.sides,
         ...meal.dessert,
         ...meal.drinks,

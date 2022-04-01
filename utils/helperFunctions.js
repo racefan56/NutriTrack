@@ -27,7 +27,7 @@ exports.validateRefPatientData = async function (req) {
   return false;
 };
 
-exports.validateRefPatientOrderData = async function (req) {
+exports.validateRefPatientOrderData = async function (req, next) {
   //Gather a unique set of menu items from the req body
   //convert entree to an array
   const entreeArr = [req.body.entree];
@@ -51,8 +51,12 @@ exports.validateRefPatientOrderData = async function (req) {
     _id: { $in: reqMenuItemSetFiltered },
   });
 
+  console.log(menuItems);
+
   if (menuItems.length !== reqMenuItemSetFiltered.length) {
-    return ['Error', 'One or more menu item(s) was not found', 404];
+    return next(
+      new AppError(['Error', 'One or more menu item(s) was not found', 404])
+    );
   }
   //Get patients current diet & allergies from the req object. This was added to the req object by the getPatientDietAllergies function in the patientDataController
   const patientCurrentDiet = req.currentDietName;
@@ -97,6 +101,7 @@ exports.checkAllergens = function (menuItemsArr, req) {
     failedAllergenTest.forEach((item) => failedItemNames.push(item.name));
     return failedItemNames;
   }
+  return [];
 };
 
 exports.isValidOrderDay = function (dayOfOrder) {
