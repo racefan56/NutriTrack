@@ -109,6 +109,7 @@ exports.createOne = (Model) => async (req, res, next) => {
       req.body.patientID = req.params.id;
       req.body.day = req.query.day;
       req.body.mealPeriod = req.query.mealPeriod;
+      req.body.mealDate = isValidOrderDay;
 
       const menuItems = await helperFunctions.validateRefPatientOrderData(
         req,
@@ -152,6 +153,7 @@ exports.createOne = (Model) => async (req, res, next) => {
       //Auto fill the req body with the default menu found above
       req.body = {
         patientID: req.params.id,
+        mealDate: isValidOrderDay,
         day: meal.day,
         mealPeriod: meal.mealPeriod,
         entree: meal.entree,

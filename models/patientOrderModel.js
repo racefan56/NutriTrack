@@ -76,6 +76,9 @@ const patientOrderSchema = new mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
+    mealDate: {
+      type: Date,
+    },
     expiresOn: {
       type: Date,
       default: Date.now() + 5 * 1000 * 60 * 60 * 24,

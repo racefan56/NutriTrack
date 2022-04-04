@@ -51,8 +51,6 @@ exports.validateRefPatientOrderData = async function (req, next) {
     _id: { $in: reqMenuItemSetFiltered },
   });
 
-  console.log(menuItems);
-
   if (menuItems.length !== reqMenuItemSetFiltered.length) {
     return next(
       new AppError(['Error', 'One or more menu item(s) was not found', 404])
@@ -120,11 +118,16 @@ exports.isValidOrderDay = function (dayOfOrder) {
   const tomorrow = today + 1;
   const dayOfOrderIndex = daysArr.indexOf(dayOfOrder);
 
-  const allowedDaysArr = [today, tomorrow];
+  if (dayOfOrderIndex === today) {
+    //return todays date
+    return now;
+  }
 
-  const isValidOrderDay = allowedDaysArr.includes(dayOfOrderIndex);
-
-  return isValidOrderDay;
+  if (dayOfOrderIndex === tomorrow) {
+    //return tomorrows date
+    return now.setDate(now.getDate() + 1);
+  }
+  return false;
 };
 
 exports.validateRefMenuItemData = async function (req) {
