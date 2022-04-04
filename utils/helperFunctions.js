@@ -130,6 +130,24 @@ exports.isValidOrderDay = function (dayOfOrder) {
   return false;
 };
 
+//Combines the date the meal is for, along with an hour of day associated with the mealPeriod the meal is for. This will make sorting meal orders easier.
+exports.mealDate = (mealPeriod, date) => {
+  let mealDate;
+  if (mealPeriod === 'Breakfast') {
+    mealDate = new Date(date);
+    mealDate.setHours(7, 0, 0, 0);
+    return mealDate;
+  }
+  if (mealPeriod === 'Lunch') {
+    mealDate = new Date(date);
+    mealDate.setHours(12, 0, 0, 0);
+    return mealDate;
+  }
+  mealDate = new Date(date);
+  mealDate.setHours(17, 0, 0, 0);
+  return mealDate;
+};
+
 exports.validateRefMenuItemData = async function (req) {
   //If attempting to update a menuItem, check if these fields are supplied on the req body, if they are, check if they are valid
 

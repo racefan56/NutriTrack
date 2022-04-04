@@ -94,7 +94,7 @@ exports.createOne = (Model) => async (req, res, next) => {
       Model.modelName === 'PatientOrder' &&
       Object.keys(req.body).length > 0
     ) {
-      //Meal orders can only be submitted for the current or next day of the week
+      //Meal orders can only be submitted for the current or next day of the week. Returns the meal date if it is a valid day, otherwise, returns false
       const isValidOrderDay = helperFunctions.isValidOrderDay(req.query.day);
 
       //If the meal order being submitted is not for either today or tomorrow, throw an error
@@ -106,10 +106,14 @@ exports.createOne = (Model) => async (req, res, next) => {
           )
         );
       }
+
       req.body.patientID = req.params.id;
       req.body.day = req.query.day;
       req.body.mealPeriod = req.query.mealPeriod;
-      req.body.mealDate = isValidOrderDay;
+      req.body.mealDate = helperFunctions.mealDate(
+        req.body.mealPeriod,
+        isValidOrderDay
+      );
 
       const menuItems = await helperFunctions.validateRefPatientOrderData(
         req,
@@ -130,7 +134,7 @@ exports.createOne = (Model) => async (req, res, next) => {
 
     //If model is PatientOrder & the req.body IS empty, fill the req.body with the default menu for the specified day, mealPeriod, & current patients diet from the query & params recieved
     if (Model.modelName === 'PatientOrder' && !Object.keys(req.body).length) {
-      //Meal orders can only be submitted for the current or next day of the week
+      //Meal orders can only be submitted for the current or next day of the week. Returns the meal date if it is a valid day, otherwise, returns false
       const isValidOrderDay = helperFunctions.isValidOrderDay(req.query.day);
 
       //If the meal order being submitted is not for either today or tomorrow, throw an error
@@ -153,7 +157,7 @@ exports.createOne = (Model) => async (req, res, next) => {
       //Auto fill the req body with the default menu found above
       req.body = {
         patientID: req.params.id,
-        mealDate: isValidOrderDay,
+        mealDate: helperFunctions.mealDate(meal.mealPeriod, isValidOrderDay),
         day: meal.day,
         mealPeriod: meal.mealPeriod,
         entree: meal.entree,
