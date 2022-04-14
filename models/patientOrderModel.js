@@ -142,10 +142,18 @@ patientOrderSchema.virtual('totalMealCarbCount').get(function () {
     this.condiments
   );
 
-  const mapArr = concatItemArrs.map((item) => item.carbsInGrams);
+  //If there are no menu items, return 0 by default.
+  if (concatItemArrs.length > 0) {
+    const mapArr = concatItemArrs.map((item) =>
+      //if the 'carbsInGrams' field can't be found (i.e a deleted menu item), return 0
+      item.carbsInGrams ? item.carbsInGrams : 0
+    );
 
-  const totalCarbCount = mapArr.reduce((result, item) => result + item);
+    const totalCarbCount = mapArr.reduce((result, item) => result + item);
 
+    return totalCarbCount;
+  }
+  const totalCarbCount = 0;
   return totalCarbCount;
 });
 
@@ -159,10 +167,18 @@ patientOrderSchema.virtual('totalMealSodiumCount').get(function () {
     this.condiments
   );
 
-  const mapArr = concatItemArrs.map((item) => item.sodiumInMG);
+  //If there are no menu items, return 0 by default.
+  if (concatItemArrs.length > 0) {
+    //if the 'soidumInMG' field can't be found (i.e a deleted menu item), return 0
+    const mapArr = concatItemArrs.map((item) =>
+      item.sodiumInMG ? item.sodiumInMG : 0
+    );
 
-  const totalSodiumCount = mapArr.reduce((result, item) => result + item);
+    const totalSodiumCount = mapArr.reduce((result, item) => result + item);
 
+    return totalSodiumCount;
+  }
+  const totalSodiumCount = 0;
   return totalSodiumCount;
 });
 
