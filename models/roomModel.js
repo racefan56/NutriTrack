@@ -11,12 +11,13 @@ const roomSchema = new mongoose.Schema({
   },
   roomNumber: {
     type: Number,
-    unique: true,
     required: [true, 'A room number is required'],
     min: 1,
     max: 9999,
   },
 });
+
+roomSchema.index({ unit: 1, roomNumber: 1 }, { unique: true });
 
 //Pre save middleware that will take the unit ID given when a room is created, and check if the unit exists
 roomSchema.pre('save', async function (next) {
