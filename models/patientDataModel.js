@@ -69,7 +69,7 @@ patientDataSchema.virtual('mealOrders', {
 });
 
 //Prevent multiple patients being assigned to the same room at the same time
-patientDataSchema.index({ roomNumber: 1 }, { unique: true });
+patientDataSchema.index({ unit: 1, roomNumber: 1 }, { unique: true });
 
 //Pre save middleware that will take the room ID given when a patient is created, and check if the room exists
 patientDataSchema.pre('save', async function (next) {
