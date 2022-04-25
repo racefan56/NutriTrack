@@ -47,9 +47,12 @@ const patientDataSchema = new mongoose.Schema(
         message: 'Status must be either Eating or NPO',
       },
     },
-    supplements: {
-      type: String,
-    },
+    supplements: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'MenuItem',
+      },
+    ],
     createdOn: {
       type: Date,
       default: Date.now(),
@@ -85,7 +88,7 @@ patientDataSchema.pre('save', async function (next) {
   next();
 });
 
-//Everytime a query is made on the tour model (any find type), the roomNumber will be populated by the room information obtained by the reference made with its IDs
+//Everytime a query is made on the patientData model (any find type), the roomNumber will be populated by the room information obtained by the reference made with its IDs
 patientDataSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'roomNumber',
