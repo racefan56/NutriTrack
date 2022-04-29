@@ -7,13 +7,6 @@ const unitSchema = new mongoose.Schema({
     trim: true,
     unique: true,
   },
-  roomStartEnd: {
-    type: Array,
-    required: [
-      true,
-      'Please enter the starting and ending room numbers for this unit',
-    ],
-  },
   description: {
     type: String,
     required: [true, 'description is required'],

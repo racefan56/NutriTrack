@@ -27,13 +27,6 @@ roomSchema.pre('save', async function (next) {
   if (!unit) {
     return next(new AppError());
   }
-  //Check if the room number provided is within the range specified in the unit
-  if (
-    unit.roomStartEnd[0] > this.roomNumber ||
-    unit.roomStartEnd[1] < this.roomNumber
-  ) {
-    return next(new AppError());
-  }
   next();
 });
 
