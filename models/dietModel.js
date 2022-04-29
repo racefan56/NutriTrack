@@ -5,38 +5,17 @@ const dietSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A diet name is required'],
     unique: true,
-    enum: {
-      values: [
-        'Regular',
-        'Cardiac',
-        'Heart Healthy',
-        'GI Soft',
-        'Mechanical Soft',
-        'Puree',
-        'Full Liquid',
-        'Clear Liquid',
-      ],
-      message:
-        'Invalid input. Please use a diet from the available options of "Regular", "Cardiac", "Heart Healthy", "GI Soft", "Mechanical Soft", "Puree", "Full Liquid", "Clear Liquid".',
-    },
   },
-  calories: {
+  carbsInGrams: {
     type: Number,
+    required: [true, 'Max total carb count (in grams) per meal is required'],
   },
-  totalFat: {
+  sodiumInMG: {
     type: Number,
-  },
-  cholesterol: {
-    type: Number,
-  },
-  sodium: {
-    type: Number,
-  },
-  totalCarbs: {
-    type: Number,
-  },
-  protein: {
-    type: Number,
+    required: [
+      true,
+      'Max total sodium count (in miligrams) per meal is required',
+    ],
   },
 });
 
