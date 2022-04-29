@@ -17,6 +17,10 @@ const dietSchema = new mongoose.Schema({
       'Max total sodium count (in miligrams) per meal is required',
     ],
   },
+  description: {
+    type: String,
+    required: [true, 'A description is required'],
+  },
 });
 
 const Diet = mongoose.model('Diet', dietSchema);
