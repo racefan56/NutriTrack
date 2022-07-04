@@ -39,6 +39,10 @@ roomSchema.pre(/^find/, function (next) {
   next();
 });
 
+roomSchema.pre(/findByIdAndDelete/, function(next) {
+  
+})
+
 const Room = mongoose.model('Room', roomSchema);
 
 module.exports = Room;

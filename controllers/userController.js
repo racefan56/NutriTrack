@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/userModel');
-const AppError = require('./../utils/appError');
+const AppError = require('../utils/appError');
+const factory = require('./handlerFactory');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -10,23 +11,7 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-
-    res.status(201).json({
-      status: 'success',
-      data: {
-        users,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+exports.getAllUsers = factory.getAll(User);
 
 exports.getUser = async (req, res, next) => {
   try {
