@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Unit = require('./unitModel');
+const Patient = require('./patientDataModel');
 const AppError = require('../utils/appError');
 
 const roomSchema = new mongoose.Schema({
@@ -14,6 +15,10 @@ const roomSchema = new mongoose.Schema({
     required: [true, 'A room number is required'],
     min: 1,
     max: 9999,
+  },
+  isOutOfService: {
+    type: Boolean,
+    required: [true, 'Please specifify if room is in service or not'],
   },
 });
 
@@ -38,10 +43,6 @@ roomSchema.pre(/^find/, function (next) {
   });
   next();
 });
-
-roomSchema.pre(/findByIdAndDelete/, function(next) {
-  
-})
 
 const Room = mongoose.model('Room', roomSchema);
 

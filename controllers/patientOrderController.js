@@ -65,19 +65,26 @@ exports.getPrepLists = async (req, res) => {
       (arr) => arr.productionArea.areaName === productionArea
     );
 
-    //extract only the value of the item name field from the list of menu item objects produced in the filter stage above
-    const itemNames = areaSpecificItems.map((item) => item.name);
+    //Count how many of each item are present in the areaSpecificItems array, producing the final preplist for the production area
+    const itemsAndCounts = areaSpecificItems.map((curItem) => {
+      const count = areaSpecificItems.filter(
+        (item) => item.name === curItem._doc.name
+      );
+      const itemCount = { ...curItem._doc, count: count.length };
+      return itemCount;
+    });
 
-    //Count how many of each item are present in the itemNames array, producing the final preplist for the production area
-    const prepListItemCount = itemNames.reduce((prev, cur) => {
-      prev[cur] = (prev[cur] || 0) + 1;
-      return prev;
-    }, {});
+    const itemNamesSet = new Set(itemsAndCounts.map((item) => item.name));
+
+    const prepList = [...itemNamesSet].map((name) => {
+      const found = itemsAndCounts.find((el) => el.name === name);
+      return found;
+    });
 
     res.status(200).json({
       status: 'success',
       data: {
-        prepListItemCount,
+        prepList,
       },
     });
   } catch (err) {

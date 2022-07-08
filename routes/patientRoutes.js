@@ -28,7 +28,7 @@ router.route('/generatePrepLists').get(patientOrderController.getPrepLists);
 
 //POST orders for a patient based on their ID
 router
-  .route('/:id/menu/order')
+  .route('/:patientId/menu/order')
   .post(
     patientDataController.getPatientDietAllergies,
     patientOrderController.createOrder
@@ -36,7 +36,7 @@ router
 
 //GET, PATCH, DELETE, single order based on patientID & orderID
 router
-  .route('/:id/menu/order/:orderId')
+  .route('/:patientId/menu/order/:orderId')
   .get(patientOrderController.getOrder)
   .patch(
     patientDataController.getPatientDietAllergies,

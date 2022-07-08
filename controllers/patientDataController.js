@@ -189,7 +189,7 @@ exports.getRiskLog = async (req, res) => {
 
 exports.getPatientDietAllergies = async (req, res, next) => {
   try {
-    const currentPatient = await PatientData.findById(req.params.id);
+    const currentPatient = await PatientData.findById(req.params.patientId);
 
     req.currentDiet = currentPatient.currentDiet._id;
     req.currentDietName = currentPatient.currentDiet.name;

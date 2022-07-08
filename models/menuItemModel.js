@@ -93,6 +93,10 @@ const menuItemSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  isOutOfStock: {
+    type: Boolean,
+    required: [true, 'Please specifify if menu item is in stock or not'],
+  },
   createdOn: {
     type: Date,
     default: Date.now(),

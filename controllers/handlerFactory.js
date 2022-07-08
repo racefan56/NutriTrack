@@ -107,7 +107,7 @@ exports.createOne = (Model) => async (req, res, next) => {
         );
       }
 
-      req.body.patientID = req.params.id;
+      req.body.patientID = req.params.patientId;
       req.body.day = req.query.day;
       req.body.mealPeriod = req.query.mealPeriod;
       req.body.mealDate = helperFunctions.mealDate(
@@ -147,19 +147,31 @@ exports.createOne = (Model) => async (req, res, next) => {
         );
       }
 
-      //Get the default menu that matches the patient diet, day, & mealPeriod (A unique compound index)
+      //Get the default menu that matches the patient diet, day, mealPeriod, & option (A unique compound index)
       const meal = await Menu.findOne({
         dietAvailability: req.currentDiet,
         day: `${req.query.day}`,
         mealPeriod: `${req.query.mealPeriod}`,
+        option: `${req.query.option}`,
       });
+
+      //If no meal is found, throw an error
+      if (!meal) {
+        return next(
+          new AppError(
+            'No default meal order was found for the specified day, meal period, diet, & option.',
+            400
+          )
+        );
+      }
 
       //Auto fill the req body with the default menu found above
       req.body = {
-        patientID: req.params.id,
+        patientID: req.params.patientId,
         mealDate: helperFunctions.mealDate(meal.mealPeriod, isValidOrderDay),
         day: meal.day,
         mealPeriod: meal.mealPeriod,
+        option: meal.option,
         entree: meal.entree,
         sides: [...meal.sides],
         dessert: [...meal.dessert],

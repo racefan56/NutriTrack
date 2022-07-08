@@ -34,6 +34,14 @@ const patientOrderSchema = new mongoose.Schema(
         message: 'Must be either Breakfast, Lunch, or Dinner',
       },
     },
+    option: {
+      type: String,
+      required: [true, 'The meal option type is required'],
+      enum: {
+        values: ['Hot', 'Cold', 'Custom'],
+        message: 'Invalid input. Please select either Hot, Cold, or Custom.',
+      },
+    },
     entree: {
       type: mongoose.Schema.ObjectId,
       ref: 'MenuItem',

@@ -74,6 +74,10 @@ const menuSchema = new mongoose.Schema(
         trim: true,
       },
     ],
+    isOutOfService: {
+      type: Boolean,
+      required: [true, 'Please specifify if menu is in service or not'],
+    },
     createdOn: {
       type: Date,
       default: Date.now(),

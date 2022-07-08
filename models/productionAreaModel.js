@@ -9,6 +9,13 @@ const productionAreaSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  isOutOfService: {
+    type: Boolean,
+    required: [
+      true,
+      'Please specifify if production area is in service or not',
+    ],
+  },
 });
 
 const ProductionArea = mongoose.model('ProductionArea', productionAreaSchema);

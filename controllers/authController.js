@@ -245,7 +245,17 @@ exports.updatePassword = async (req, res, next) => {
       return next(new AppError('Your current password is incorrect', 401));
     }
 
-    // 3 if password is correct, update the password
+    // 3 check if updated password and updatedPassword are the same, if not, throw error
+    if (req.body.updatedPassword !== req.body.updatedPasswordConfirm) {
+      return next(
+        new AppError(
+          'Updated password & updated password confirm must match',
+          400
+        )
+      );
+    }
+
+    // 4 if password is correct, and updated password fields match, update the password
     user.password = req.body.updatedPassword;
     user.passwordConfirm = req.body.updatedPasswordConfirm;
 
