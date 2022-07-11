@@ -19,6 +19,10 @@ router
   .patch(authController.protect, authController.updatePassword);
 
 router
+  .route('/updateUser/:userId')
+  .patch(authController.protect, userController.updateOtherUser);
+
+router
   .route('/updateUser')
   .patch(authController.protect, userController.updateCurrentUser);
 

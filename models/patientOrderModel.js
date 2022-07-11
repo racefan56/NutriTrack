@@ -80,9 +80,10 @@ const patientOrderSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    createdOn: {
+    createdAt: {
       type: Date,
       default: Date.now(),
+      select: false,
     },
     mealDate: {
       type: Date,

@@ -20,6 +20,11 @@ const roomSchema = new mongoose.Schema({
     type: Boolean,
     required: [true, 'Please specifify if room is in service or not'],
   },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false,
+  },
 });
 
 roomSchema.index({ unit: 1, roomNumber: 1 }, { unique: true });

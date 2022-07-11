@@ -16,6 +16,11 @@ const productionAreaSchema = new mongoose.Schema({
       'Please specifify if production area is in service or not',
     ],
   },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false,
+  },
 });
 
 const ProductionArea = mongoose.model('ProductionArea', productionAreaSchema);

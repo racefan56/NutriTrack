@@ -2,10 +2,73 @@ const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/APIFeatures');
 const helperFunctions = require('../utils/helperFunctions');
 const Menu = require('../models/menuModel');
+const PatientData = require('../models/patientDataModel');
+const Room = require('../models/roomModel');
+const PatientOrder = require('../models/patientOrderModel');
 
 //Takes the specified model and deletes the specifided document from it
 exports.deleteOne = (Model) => async (req, res, next) => {
   try {
+    if (Model.modelName === 'Room') {
+      const doc = await PatientData.find({ roomNumber: req.params.id });
+      if (doc.length > 0) {
+        return next(
+          new AppError(
+            `That room is currently occuipied by a patient. The room must first be vacant to be deleted.`,
+            400
+          )
+        );
+      }
+    }
+    if (Model.modelName === 'Unit') {
+      const doc = await Room.find({ unit: req.params.id });
+      if (doc.length > 0) {
+        return next(
+          new AppError(
+            `That unit currently has rooms attached to it. The unit must first be empty to be deleted.`,
+            400
+          )
+        );
+      }
+    }
+    if (Model.modelName === 'MenuItem') {
+      const patientOrderDoc = await PatientOrder.find({
+        $or: [
+          { sides: req.params.id },
+          { dessert: req.params.id },
+          { drinks: req.params.id },
+          { condiments: req.params.id },
+          { supplements: req.params.id },
+          { entree: req.params.id },
+        ],
+      });
+      if (patientOrderDoc.length > 0) {
+        return next(
+          new AppError(
+            `That menu item is currently being used by one or more patient orders. The menu item must not be in use for it to be deleted.`,
+            400
+          )
+        );
+      }
+      const menuDoc = await Menu.find({
+        $or: [
+          { sides: req.params.id },
+          { dessert: req.params.id },
+          { drinks: req.params.id },
+          { condiments: req.params.id },
+          { supplements: req.params.id },
+          { entree: req.params.id },
+        ],
+      });
+      if (menuDoc.length > 0) {
+        return next(
+          new AppError(
+            `That menu item is currently being used by one or more preset menus. The menu item must not be in use for it to be deleted.`,
+            400
+          )
+        );
+      }
+    }
     const doc = await Model.findByIdAndDelete(
       Model.modelName === 'PatientOrder' ? req.params.orderId : req.params.id
     );

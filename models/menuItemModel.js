@@ -97,7 +97,7 @@ const menuItemSchema = new mongoose.Schema({
     type: Boolean,
     required: [true, 'Please specifify if menu item is in stock or not'],
   },
-  createdOn: {
+  createdAt: {
     type: Date,
     default: Date.now(),
   },

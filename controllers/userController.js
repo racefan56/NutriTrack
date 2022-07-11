@@ -4,6 +4,7 @@ const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
 
 const filterObj = (obj, ...allowedFields) => {
+  console.log(allowedFields);
   const newObj = {};
   Object.keys(obj).forEach((el) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];
@@ -51,6 +52,38 @@ exports.updateCurrentUser = async (req, res, next) => {
     const filteredBody = filterObj(req.body, 'email');
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
+      filteredBody,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: updatedUser,
+      },
+    });
+  } catch (err) {
+    res.status(401).json({
+      status: 'fail',
+      message: err,
+    });
+  }
+};
+
+exports.updateOtherUser = async (req, res, next) => {
+  try {
+    //Prevent user from attempting to update the other users password using this function
+    if (req.body.password || req.body.passwordConfirm) {
+      return next(new AppError('You can only update your own password.', 400));
+    }
+
+    //Update user data
+    const filteredBody = filterObj(req.body, 'email', 'role');
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
       filteredBody,
       {
         new: true,

@@ -12,6 +12,11 @@ const unitSchema = new mongoose.Schema({
     required: [true, 'description is required'],
     trim: true,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false,
+  },
 });
 
 const Unit = mongoose.model('Unit', unitSchema);

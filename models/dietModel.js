@@ -21,6 +21,11 @@ const dietSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A description is required'],
   },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false,
+  },
 });
 
 const Diet = mongoose.model('Diet', dietSchema);
