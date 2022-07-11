@@ -15,7 +15,7 @@ const userRouter = require('./routes/userRoutes');
 const indexRouter = require('./routes/indexRoutes');
 
 const { protect } = require('./controllers/authController');
-// const globalErrorHandler = require('./controllers/errorController');
+const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
@@ -90,6 +90,6 @@ app.all('*', (req, res, next) => {
   });
 });
 
-// app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 
 module.exports = app;
