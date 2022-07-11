@@ -62,11 +62,18 @@ exports.deleteOne = (Model) => async (req, res, next) => {
       });
       if (menuDoc.length > 0) {
         return next(
-          new AppError(
-            `That menu item is currently being used by one or more preset menus. The menu item must not be in use for it to be deleted.`,
-            400
-          )
+          res
+            .status(400)
+            .send(
+              `That menu item is currently being used by one or more preset menus. The menu item must not be in use for it to be deleted.`
+            )
         );
+        // return next(
+        //   new AppError(
+        //     `That menu item is currently being used by one or more preset menus. The menu item must not be in use for it to be deleted.`,
+        //     400
+        //   )
+        // );
       }
     }
     const doc = await Model.findByIdAndDelete(
