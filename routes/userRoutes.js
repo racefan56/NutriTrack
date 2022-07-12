@@ -27,12 +27,12 @@ router
   .patch(authController.protect, userController.updateCurrentUser);
 
 router
-  .route('/deleteUser')
-  .patch(authController.protect, userController.deleteCurrentUser);
-
-router
   .route('/deleteUser/:userId')
   .patch(authController.protect, userController.deleteOtherUser);
+
+router
+  .route('/deleteUser')
+  .patch(authController.protect, userController.deleteCurrentUser);
 
 router.route('/:id').get(authController.protect, userController.getUser);
 
