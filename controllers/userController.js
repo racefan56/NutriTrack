@@ -105,9 +105,27 @@ exports.updateOtherUser = async (req, res, next) => {
   }
 };
 
+// sets user isActive to false, doesn't actually delete the user
 exports.deleteCurrentUser = async (req, res) => {
   try {
     await User.findByIdAndUpdate(req.user.id, { isActive: false });
+
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err,
+    });
+  }
+};
+
+// sets user isActive to false, doesn't actually delete the user
+exports.deleteOtherUser = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.userId, { isActive: false });
 
     res.status(204).json({
       status: 'success',

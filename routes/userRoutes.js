@@ -30,6 +30,10 @@ router
   .route('/deleteUser')
   .patch(authController.protect, userController.deleteCurrentUser);
 
+router
+  .route('/deleteUser/:userId')
+  .patch(authController.protect, userController.deleteOtherUser);
+
 router.route('/:id').get(authController.protect, userController.getUser);
 
 router.route('/').get(authController.protect, userController.getAllUsers);
