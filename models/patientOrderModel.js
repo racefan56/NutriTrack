@@ -111,7 +111,7 @@ patientOrderSchema.pre(/^find/, function (next) {
   this.populate([
     {
       path: 'patientID',
-      select: '_id currentDiet status',
+      select: '_id currentDiet status firstName lastName',
     },
     {
       path: 'entree',
