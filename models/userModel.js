@@ -52,7 +52,6 @@ const userSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true,
-    select: false,
   },
   createdAt: {
     type: Date,
@@ -85,11 +84,11 @@ userSchema.pre('save', function (next) {
   next();
 });
 
-userSchema.pre(/^find/, function (next) {
-  // this points to current query
-  this.find({ active: { $ne: false } });
-  next();
-});
+// userSchema.pre(/^find/, function (next) {
+//   // this points to current query
+//   this.find({ isActive: { $ne: false } });
+//   next();
+// });
 
 // INSTANCE METHOD. Available on all user documents
 userSchema.methods.correctPassword = async function (
