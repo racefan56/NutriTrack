@@ -5,6 +5,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const compression = require('compression');
 const hpp = require('hpp');
 const cors = require('cors');
 
@@ -29,9 +30,9 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-//allow 100 requests from the same address per hour
+//allow 200 requests from the same address per hour
 const limiter = rateLimit({
-  max: 100,
+  max: 200,
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour',
 });
@@ -90,6 +91,7 @@ app.all('*', (req, res, next) => {
   });
 });
 
+app.use(compression());
 app.use(globalErrorHandler);
 
 module.exports = app;
