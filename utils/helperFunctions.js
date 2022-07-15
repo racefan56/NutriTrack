@@ -147,12 +147,12 @@ exports.isValidOrderDay = function (dayOfOrder) {
 
   if (dayOfOrderIndex === tomorrow) {
     //return tomorrows date
-    return true;
+    return now.setDate(now.getDate() + 1);
   }
 
   if (dayOfOrderIndex === twoDaysFromNow) {
     //return two days from nows date
-    return true;
+    return now.setDate(now.getDate() + 2);
   }
 
   return false;
