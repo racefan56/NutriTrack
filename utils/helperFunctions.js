@@ -115,7 +115,25 @@ exports.isValidOrderDay = function (dayOfOrder) {
 
   const now = new Date();
   const today = now.getDay();
-  const tomorrow = today + 1;
+  const getTomorrow = () => {
+    // In the case where today is saturday, adding one would give an index outside of the daysArr. So it must loop back to index 0 for Sunday
+    if (today === 6) {
+      return 0;
+    }
+    return today + 1;
+  };
+  const getTwoDaysFromNow = () => {
+    // In the case where today is friday, adding two would give an index outside of the daysArr. So it must loop back to index 0 for Sunday
+    if (today === 5) {
+      return 0;
+    }
+    // In the case where today is saturday, adding two would give an index outside of the daysArr. So it must loop back to index 1 for Monday
+    if (today === 6) {
+      return 1;
+    }
+    // else return today plus 2
+    return today + 2;
+  };
   const dayOfOrderIndex = daysArr.indexOf(dayOfOrder);
 
   if (dayOfOrderIndex === today) {
@@ -123,10 +141,16 @@ exports.isValidOrderDay = function (dayOfOrder) {
     return now;
   }
 
-  if (dayOfOrderIndex === tomorrow) {
+  if (dayOfOrderIndex === getTomorrow()) {
     //return tomorrows date
     return now.setDate(now.getDate() + 1);
   }
+
+  if (dayOfOrderIndex === getTwoDaysFromNow()) {
+    //return two days from nows date
+    return now.setDate(now.getDate() + 2);
+  }
+
   return false;
 };
 

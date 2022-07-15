@@ -37,7 +37,7 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour',
 });
 
-//Origin is the current location of the front end
+// Origin is the current location of the front end
 // could also pass other urls here for specific websites to have access
 app.use(cors({ origin: process.env.FRONTEND_URL }));
 

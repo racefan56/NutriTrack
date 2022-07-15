@@ -160,11 +160,11 @@ exports.createOne = (Model) => async (req, res, next) => {
       //Meal orders can only be submitted for the current or next day of the week. Returns the meal date if it is a valid day, otherwise, returns false
       const isValidOrderDay = helperFunctions.isValidOrderDay(req.query.day);
 
-      //If the meal order being submitted is not for either today or tomorrow, throw an error
+      //If the meal order being submitted is not for either today, tomorrow, or the day after, throw an error
       if (!isValidOrderDay) {
         return next(
           new AppError(
-            'Meal orders can only be submitted for the current or next day of the week',
+            'Meal orders can only be submitted for the current or next two days of the week',
             400
           )
         );
@@ -200,11 +200,11 @@ exports.createOne = (Model) => async (req, res, next) => {
       //Meal orders can only be submitted for the current or next day of the week. Returns the meal date if it is a valid day, otherwise, returns false
       const isValidOrderDay = helperFunctions.isValidOrderDay(req.query.day);
 
-      //If the meal order being submitted is not for either today or tomorrow, throw an error
+      //If the meal order being submitted is not for either today, tomorrow, or the day after, throw an error
       if (!isValidOrderDay) {
         return next(
           new AppError(
-            'Meal orders can only be submitted for the current or next day of the week',
+            'Meal orders can only be submitted for the current or next two days of the week',
             400
           )
         );
