@@ -103,6 +103,26 @@ exports.checkAllergens = function (menuItemsArr, req) {
 };
 
 exports.isValidOrderDay = function (dayOfOrder) {
+  const getTomorrow = (today) => {
+    // In the case where today is saturday, adding one would give an index outside of the daysArr. So it must loop back to index 0 for Sunday
+    if (today === 6) {
+      return 0;
+    }
+    return today + 1;
+  };
+  const getTwoDaysFromNow = (today) => {
+    // In the case where today is friday, adding two would give an index outside of the daysArr. So it must loop back to index 0 for Sunday
+    if (today === 5) {
+      return 0;
+    }
+    // In the case where today is saturday, adding two would give an index outside of the daysArr. So it must loop back to index 1 for Monday
+    if (today === 6) {
+      return 1;
+    }
+    // else return today plus 2
+    return today + 2;
+  };
+
   const daysArr = [
     'Sunday',
     'Monday',
@@ -115,25 +135,9 @@ exports.isValidOrderDay = function (dayOfOrder) {
 
   const now = new Date();
   const today = now.getDay();
-  const getTomorrow = () => {
-    // In the case where today is saturday, adding one would give an index outside of the daysArr. So it must loop back to index 0 for Sunday
-    if (today === 6) {
-      return 0;
-    }
-    return today + 1;
-  };
-  const getTwoDaysFromNow = () => {
-    // In the case where today is friday, adding two would give an index outside of the daysArr. So it must loop back to index 0 for Sunday
-    if (today === 5) {
-      return 0;
-    }
-    // In the case where today is saturday, adding two would give an index outside of the daysArr. So it must loop back to index 1 for Monday
-    if (today === 6) {
-      return 1;
-    }
-    // else return today plus 2
-    return today + 2;
-  };
+  const tomorrow = getTomorrow(today);
+  const twoDaysFromNow = getTwoDaysFromNow(today);
+
   const dayOfOrderIndex = daysArr.indexOf(dayOfOrder);
 
   if (dayOfOrderIndex === today) {
@@ -141,14 +145,14 @@ exports.isValidOrderDay = function (dayOfOrder) {
     return now;
   }
 
-  if (dayOfOrderIndex === getTomorrow()) {
+  if (dayOfOrderIndex === tomorrow) {
     //return tomorrows date
-    return now.setDate(now.getDate() + 1);
+    return true;
   }
 
-  if (dayOfOrderIndex === getTwoDaysFromNow()) {
+  if (dayOfOrderIndex === twoDaysFromNow) {
     //return two days from nows date
-    return now.setDate(now.getDate() + 2);
+    return true;
   }
 
   return false;
